@@ -3,7 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 import { AppStateType } from './redux/store';
 import {addCityThunk} from "./redux/reducers/citiesReducer";
 import json from './city.list.json';
-import any = jasmine.any;
+import {filterTownsAc} from "./redux/reducers/citiesList/citiesList.reducer";
+import {TownType} from "./redux/reducers/citiesList/types";
 
 const api = {
     key: '330216f9e3042b8a57a7865c3de67865',
@@ -67,7 +68,8 @@ type WeatherOneType = {
 function App() {
     const [query, setQuery] = useState('');
     const {cities} = useSelector((state: AppStateType) => state.cities);
-    const [towns, setTowns] = useState<any>(json);
+    // const [towns, setTowns] = useState<any>(json);
+    const {towns} = useSelector((state: AppStateType) => state.townsList);
 
     const dispatch = useDispatch();
     const [showList, setShowList] = useState(false);
@@ -126,39 +128,43 @@ function App() {
         // fetch('../public/city.list.json')
         //     .then(res => console.log(res.json()))
             // .then(res => console.log(res));
-        console.log(json);
+        console.log(towns);
     };
 
-    const onSearchChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         // @ts-ignore
-        console.log(json.filter((name: any) => {
-            if (name.name.includes(e.currentTarget.value)) {
-                return name;
-            }
-        }));
-    };
+        // console.log(json.filter((name: any) => {
+        //     if (name.name.includes(e.currentTarget.value)) {
+        //         return name;
+        //     }
+        // }));
 
-    const getTowns = () => {
-        towns.map
+        dispatch(filterTownsAc(e.currentTarget.value));
     };
 
     return (
         <div className={(typeof weather?.main !== 'undefined') ? ((weather.main.temp > 16) ? 'app warm' : 'app') : 'app'}>
             <main>
                 <div className="search-box">
-                    <select
-                        // type="text"
+                    <input
+                        type="text"
                         className={'search-bar'}
                         placeholder={'Search...'}
-                        // onChange={e => setQuery(e.target.value)}
-                        onChange={onSearchChange}
-                        // value={query}
+                        onChange={e => setQuery(e.target.value)}
+                        // onChange={onSearchChange}
+                        value={query}
                         onKeyPress={search}
-                    >
-                        {/*{towns.map((town: any) => {*/}
-                        {/*    return <option value={town.name}>{town.name}</option>*/}
-                        {/*})}*/}
-                    </select>
+                        list={'towns'}
+                    />
+                    {/*<ul id={'towns'}>*/}
+                    {/*    {towns.map((town: TownType) => <li>{town.name}</li>)}*/}
+                    {/*</ul>*/}
+                    <datalist id="towns">
+                        {towns.map((town: TownType) => {
+                            return <option value={town.name}/>
+                        })}
+                    </datalist>
+
                     <button
                         type='button'
                         className='search-btn'
