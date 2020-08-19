@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import { AppStateType } from './redux/store';
 import {addCityThunk} from "./redux/reducers/citiesReducer";
+import json from './city.list.json';
+import any = jasmine.any;
 
 const api = {
     key: '330216f9e3042b8a57a7865c3de67865',
@@ -65,27 +67,29 @@ type WeatherOneType = {
 function App() {
     const [query, setQuery] = useState('');
     const {cities} = useSelector((state: AppStateType) => state.cities);
+    const [towns, setTowns] = useState<any>(json);
+
     const dispatch = useDispatch();
     const [showList, setShowList] = useState(false);
     const [weather, setWeather] = useState<WeatherType | null>(null);
 
     const search = (event: any) => {
-        // if (event.key === 'Enter') {
-        //     fetch(`${api.base}weather?q=${query}&units=metric&appid=${api.key}`)
-        //         .then(res => res.json())
-        //         .then(result => {
-        //             setWeather(result);
-        //             setQuery('');
-        //             console.log(result);
-        //         });
-        // }
-
         if (event.key === 'Enter') {
-            dispatch(addCityThunk(query)).then((res: any) => {
-                debbuger;
-                console.log(res);
-            });
+            fetch(`${api.base}weather?q=${query}&units=metric&appid=${api.key}`)
+                .then(res => res.json())
+                .then(result => {
+                    setWeather(result);
+                    setQuery('');
+                    console.log(result);
+                });
         }
+
+        // if (event.key === 'Enter') {
+        //     dispatch(addCityThunk(query)).then((res: any) => {
+        //         debbuger;
+        //         console.log(res);
+        //     });
+        // }
     };
 
     const dateBuilder = (d: any) => {
@@ -117,21 +121,44 @@ function App() {
     };
 
     const onBtnSearchClick = () => {
-        setShowList((prevState) => !prevState);
+        // setShowList((prevState) => !prevState);
+
+        // fetch('../public/city.list.json')
+        //     .then(res => console.log(res.json()))
+            // .then(res => console.log(res));
+        console.log(json);
+    };
+
+    const onSearchChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        // @ts-ignore
+        console.log(json.filter((name: any) => {
+            if (name.name.includes(e.currentTarget.value)) {
+                return name;
+            }
+        }));
+    };
+
+    const getTowns = () => {
+        towns.map
     };
 
     return (
         <div className={(typeof weather?.main !== 'undefined') ? ((weather.main.temp > 16) ? 'app warm' : 'app') : 'app'}>
             <main>
                 <div className="search-box">
-                    <input
-                        type="text"
+                    <select
+                        // type="text"
                         className={'search-bar'}
                         placeholder={'Search...'}
-                        onChange={e => setQuery(e.target.value)}
-                        value={query}
+                        // onChange={e => setQuery(e.target.value)}
+                        onChange={onSearchChange}
+                        // value={query}
                         onKeyPress={search}
-                    />
+                    >
+                        {/*{towns.map((town: any) => {*/}
+                        {/*    return <option value={town.name}>{town.name}</option>*/}
+                        {/*})}*/}
+                    </select>
                     <button
                         type='button'
                         className='search-btn'
