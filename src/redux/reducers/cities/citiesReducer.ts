@@ -6,8 +6,9 @@ import {
     InitialStateType,
     ThunkDispatchType,
     ThunkType,
-    UpdateCityType
+    UpdateCityType, UpdateWeatherType
 } from "./types";
+import {WeatherType} from "../../../components/WeatherCard/types";
 
 const initialState: InitialStateType = {
     cities: [],
@@ -17,6 +18,7 @@ const initialState: InitialStateType = {
 export const ADD_CITIES = 'Reducers/CitiesReducer/ADD_CITIES';
 export const UPDATE_CITIES = 'Reducers/CitiesReducer/UPDATE_CITIES';
 export const CHANGE_INPUT_NAME = 'Reducers/CitiesReducer/CHANGE_INPUT_NAME';
+export const UPDATE_WEATHER = 'Reducers/CitiesReducer/UPDATE_WEATHER';
 
 export const citiesReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
@@ -35,6 +37,8 @@ export const citiesReducer = (state: InitialStateType = initialState, action: Ac
             };
         case CHANGE_INPUT_NAME:
             return {...state, inputCity: action.inputName};
+        case UPDATE_WEATHER:
+            return {...state, cities: action.cities};
         default:
             return state;
     }
@@ -57,6 +61,11 @@ export const updateCityAc = (name: string, weather: number): UpdateCityType => (
     name
 });
 
+export const updateWeatherAc = (cities: Array<CityType>): UpdateWeatherType => ({
+    type: UPDATE_WEATHER,
+    cities
+});
+
 // Thunks
 export const addCityThunk = (cityName: string): ThunkType => (dispatch: ThunkDispatchType) => {
     debugger
@@ -69,4 +78,21 @@ export const addCityThunk = (cityName: string): ThunkType => (dispatch: ThunkDis
 
             dispatch(addCityAc(cityObj));
         })
+};
+
+export const updateWeaterThunk = (cities: Array<CityType>): ThunkType => async (dispatch: ThunkDispatchType) => {
+    const promises = cities.map((city: CityType) => api.getWeather(city.name));
+    const results = await Promise.all(promises);
+    const weather = [];
+
+    for await (const result of results) {
+        weather.push(result.data);
+    }
+
+    const newCities = weather.map((w: WeatherType) => {
+        return {
+            name: w.name,
+            weather: w.main.temp
+        };
+    });
 };

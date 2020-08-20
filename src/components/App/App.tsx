@@ -7,7 +7,8 @@ import {WeatherCard} from "../WeatherCard/WeatherCard";
 import {ButtonList} from "../SearchBox/ButtonList/ButtonList";
 import {Popup} from "../Popup/Popup";
 import { WeatherType } from '../WeatherCard/types';
-import {addCityThunk} from "../../redux/reducers/cities/citiesReducer";
+import {addCityThunk, updateWeaterThunk} from "../../redux/reducers/cities/citiesReducer";
+import {CityType} from "../../redux/reducers/cities/types";
 
 const api = {
     key: '330216f9e3042b8a57a7865c3de67865',
@@ -67,7 +68,11 @@ const App = () => {
         return `${date.getHours()}:${date.getMinutes()}`;
     };
 
-    const onBtnSearchClick = () => setShowList((prevState) => !prevState);
+    const onBtnSearchClick = () => {
+        setShowList((prevState) => !prevState);
+
+        dispatch(updateWeaterThunk(cities));
+    };
     const onChangeSearchQuery = (event: ChangeEvent<HTMLInputElement>) => {
         setQuery(event.currentTarget.value);
     };
@@ -75,7 +80,16 @@ const App = () => {
 
     const addCityToList = (cityName: string) => {
         debugger;
-        dispatch(addCityThunk(cityName));
+
+        if (cities.length <= 0) {
+            dispatch(addCityThunk(cityName));
+        } else {
+            let city = cities.find(({name}) => name === cityName);
+
+            if (!city) {
+                dispatch(addCityThunk(cityName));
+            }
+        }
     };
 
     return (

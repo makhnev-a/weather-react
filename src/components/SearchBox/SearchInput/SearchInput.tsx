@@ -10,10 +10,7 @@ type PropsType = {
 };
 
 export const SearchInput = ({inputChange, inputKeyPress, inputValue, showDropdown, onBtnSearchClick}: PropsType) => {
-    const test = () => {
-        debugger;
-        showDropdown();
-    };
+    const onShowDropdown = () => showDropdown();
 
     return (
         <div style={{position: "relative"}}>
@@ -25,7 +22,7 @@ export const SearchInput = ({inputChange, inputKeyPress, inputValue, showDropdow
                 onKeyPress={inputKeyPress}
                 value={inputValue}
                 list={'towns'}
-                onFocus={test}
+                onFocus={onShowDropdown}
                 // onBlur={hideDropdown}
             />
             <ButtonList onBtnSearchClick={onBtnSearchClick}/>
