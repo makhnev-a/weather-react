@@ -7,6 +7,10 @@ type PropsType = {
 export const ButtonList = ({onBtnSearchClick}: PropsType) => {
     return (
         <>
+            {/*<button*/}
+            {/*    type='button'*/}
+            {/*    className='add-btn'*/}
+            {/*>Add</button>*/}
             <button
                 type='button'
                 className='search-btn'

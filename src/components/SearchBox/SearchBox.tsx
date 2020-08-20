@@ -8,17 +8,29 @@ type PropsType = {
     inputKeyPress: (event: KeyboardEvent<HTMLInputElement>) => void
     inputValue: string
     towns: Array<TownType>
+    addCityToList: (cityName: string) => void
+    showDropdown: () => void
+    hideDropdown: () => void
+    dropdown: boolean
+    onBtnSearchClick: () => void
 };
 
-export const SearchBox = ({inputChange, inputKeyPress, inputValue, towns}: PropsType) => {
+export const SearchBox = ({inputChange, inputKeyPress, inputValue, towns, addCityToList, showDropdown, hideDropdown, dropdown, onBtnSearchClick}: PropsType) => {
     return (
         <>
             <SearchInput
                 inputChange={inputChange}
                 inputKeyPress={inputKeyPress}
                 inputValue={inputValue}
+                showDropdown={showDropdown}
+                onBtnSearchClick={onBtnSearchClick}
             />
-            <SearchDatalist towns={towns} />
+            <SearchDatalist
+                dropdown={dropdown}
+                hideDropdown={hideDropdown}
+                towns={towns}
+                addCityToList={addCityToList}
+            />
         </>
     );
 };
