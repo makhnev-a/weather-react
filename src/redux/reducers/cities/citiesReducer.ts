@@ -68,7 +68,6 @@ export const updateWeatherAc = (cities: Array<CityType>): UpdateWeatherType => (
 
 // Thunks
 export const addCityThunk = (cityName: string): ThunkType => (dispatch: ThunkDispatchType) => {
-    debugger
     return api.getWeather(cityName)
         .then(res => {
             const cityObj = {
@@ -95,4 +94,6 @@ export const updateWeaterThunk = (cities: Array<CityType>): ThunkType => async (
             weather: w.main.temp
         };
     });
+
+    dispatch(updateWeatherAc(newCities));
 };

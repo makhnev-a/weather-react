@@ -19,18 +19,16 @@ export const SearchDatalist = ({towns, dropdown, addCityToList, hideDropdown}: P
                         onClick={hideDropdown}
                     >x</span>
                     <div>
-                        {towns.map((town: TownType) =>
+                        {towns.map((town: TownType, index: number) =>
                             <DatalistOption
                                 addCityToList={addCityToList}
                                 name={town.name}
+                                key={`dataListOption${index}`}
                             />
                         )}
                     </div>
                 </div>
             )}
-            {/*<datalist id="towns">*/}
-            {/*    {towns.map((town: TownType) => <DatalistOption addCityToList={addCityToList} name={town.name} />)}*/}
-            {/*</datalist>*/}
         </>
     );
 };

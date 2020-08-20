@@ -23,7 +23,6 @@ export const SearchInput = ({inputChange, inputKeyPress, inputValue, showDropdow
                 value={inputValue}
                 list={'towns'}
                 onFocus={onShowDropdown}
-                // onBlur={hideDropdown}
             />
             <ButtonList onBtnSearchClick={onBtnSearchClick}/>
         </div>
