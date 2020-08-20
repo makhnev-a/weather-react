@@ -1,5 +1,5 @@
 import {combineReducers, createStore, applyMiddleware} from 'redux';
-import {citiesReducer} from './reducers/citiesReducer';
+import {citiesReducer} from './reducers/cities/citiesReducer';
 import { citiesListReducer } from './reducers/citiesList/citiesList.reducer';
 import thunk from 'redux-thunk';
 

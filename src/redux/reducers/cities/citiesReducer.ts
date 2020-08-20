@@ -1,22 +1,20 @@
-import { AppStateType } from "../store";
-import { ThunkDispatch, ThunkAction } from "redux-thunk";
-import {api} from "../../api/api";
-
-export type InitialStateType = {
-    cities: Array<CityType>
-};
-
-export type CityType = {
-    name: string
-    weather: number
-};
+import {api} from "../../../api/api";
+import {
+    ActionsType,
+    AddCityType,
+    CityType,
+    InitialStateType,
+    ThunkDispatchType,
+    ThunkType,
+    UpdateCityType
+} from "./types";
 
 const initialState: InitialStateType = {
     cities: []
 };
 
-const ADD_CITIES = 'Reducers/CitiesReducer/ADD_CITIES';
-const UPDATE_CITIES = 'Reducers/CitiesReducer/UPDATE_CITIES';
+export const ADD_CITIES = 'Reducers/CitiesReducer/ADD_CITIES';
+export const UPDATE_CITIES = 'Reducers/CitiesReducer/UPDATE_CITIES';
 
 export const citiesReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
@@ -39,34 +37,18 @@ export const citiesReducer = (state: InitialStateType = initialState, action: Ac
 };
 
 // Actions
-type ActionsType = AddCityType | UpdateCityType;
-
-type AddCityType = {
-    type: typeof ADD_CITIES
-    cityWeather: CityType
-};
-
-const addCityAc = (cityWeather: CityType): AddCityType => ({
+export const addCityAc = (cityWeather: CityType): AddCityType => ({
     type: ADD_CITIES,
     cityWeather
 });
 
-type UpdateCityType = {
-    type: typeof UPDATE_CITIES
-    weather: number
-    name: string
-};
-
-const updateCityAc = (name: string, weather: number): UpdateCityType => ({
+export const updateCityAc = (name: string, weather: number): UpdateCityType => ({
     type: UPDATE_CITIES,
     weather,
     name
 });
 
 // Thunks
-type ThunkType = ThunkAction<void, AppStateType, unknown, ActionsType>;
-type ThunkDispatchType = ThunkDispatch<AppStateType, unknown, ActionsType>;
-
 export const addCityThunk = (cityName: string): ThunkType => (dispatch: ThunkDispatchType) => {
     return api.getWeather(cityName)
         .then(res => {
