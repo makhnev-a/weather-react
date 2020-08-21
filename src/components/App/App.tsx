@@ -5,7 +5,7 @@ import {SearchBox} from "../SearchBox/SearchBox";
 import {WeatherCard} from "../WeatherCard/WeatherCard";
 import {Popup} from "../Popup/Popup";
 import {WeatherType} from '../WeatherCard/types';
-import {addCityThunk, updateWeaterThunk} from "../../redux/reducers/cities/citiesReducer";
+import {addCityThunk, deleteCityAc, updateWeaterThunk} from "../../redux/reducers/cities/citiesReducer";
 import {api} from '../../api/api';
 
 type PropsType = {
@@ -63,6 +63,8 @@ const App = ({dateBuilder, getTime}: PropsType) => {
         }
     };
 
+    const deleteCity = (cityName: string) => dispatch(deleteCityAc(cityName));
+
     return (
         <div
             className={(typeof weather?.main !== 'undefined') ? ((weather.main.temp > 16) ? 'app warm' : 'app') : 'app'}>
@@ -80,7 +82,7 @@ const App = ({dateBuilder, getTime}: PropsType) => {
                         onBtnSearchClick={onBtnSearchClick}
                     />
                 </div>
-                {showList && (<Popup cities={cities} showWeather={showWeather}/>)}
+                {showList && (<Popup cities={cities} showWeather={showWeather} deleteCity={deleteCity}/>)}
                 {typeof weather?.main !== 'undefined' && (
                     <WeatherCard
                         weather={weather}

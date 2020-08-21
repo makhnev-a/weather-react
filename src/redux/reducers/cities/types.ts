@@ -1,6 +1,6 @@
 import {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {AppStateType} from "../../store";
-import {ADD_CITIES, CHANGE_INPUT_NAME, UPDATE_CITIES, UPDATE_WEATHER} from "./citiesReducer";
+import {ADD_CITIES, CHANGE_INPUT_NAME, DELETE_CITY, UPDATE_CITIES, UPDATE_WEATHER} from "./citiesReducer";
 
 export type InitialStateType = {
     cities: Array<CityType>
@@ -12,11 +12,16 @@ export type CityType = {
     weather: number
 };
 
-export type ActionsType = AddCityType | UpdateCityType | ChangeInputName | UpdateWeatherType;
+export type ActionsType = AddCityType | UpdateCityType | ChangeInputName | UpdateWeatherType | DeleteCityType;
 
 export type AddCityType = {
     type: typeof ADD_CITIES
     cityWeather: CityType
+};
+
+export type DeleteCityType = {
+    type: typeof DELETE_CITY
+    cityName: string
 };
 
 export type ChangeInputName = {
