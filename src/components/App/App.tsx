@@ -7,6 +7,8 @@ import {Popup} from "../Popup/Popup";
 import {WeatherType} from '../WeatherCard/types';
 import {addCityThunk, deleteCityAc, updateWeaterThunk} from "../../redux/reducers/cities/citiesReducer";
 import {api} from '../../api/api';
+import {TownType} from "../../redux/reducers/citiesList/types";
+import { setQueryAc } from '../../redux/reducers/citiesList/citiesList.reducer';
 
 type PropsType = {
     dateBuilder: (d: any) => string
@@ -14,20 +16,25 @@ type PropsType = {
 };
 
 const App = ({dateBuilder, getTime}: PropsType) => {
-    const [query, setQuery] = useState('');
+    // const [query, setQuery] = useState('');
     const [dropdown, setDropdown] = useState(false);
     const [showList, setShowList] = useState(false);
     const [weather, setWeather] = useState<WeatherType | null>(null);
 
     const dispatch = useDispatch();
     const {cities} = useSelector((state: AppStateType) => state.cities);
-    const {towns} = useSelector((state: AppStateType) => state.townsList);
+    const [towns, query] = useSelector((state: AppStateType) => [
+        state.townsList.towns.filter((it: TownType) => it.name.toLowerCase().includes(state.townsList.query.toLowerCase())),
+        state.townsList.query
+    ]);
 
     const getWeather = (query: string) => {
         return api.getWeather(query).then(result => {
             setWeather(result.data);
-            setQuery('');
+            // setQuery('');
+            dispatch(setQueryAc(''));
         });
+
     };
 
     const showWeather = (cityName: string) => {
@@ -49,16 +56,26 @@ const App = ({dateBuilder, getTime}: PropsType) => {
         dispatch(updateWeaterThunk(cities));
     };
 
-    const onChangeSearchQuery = (event: ChangeEvent<HTMLInputElement>) => setQuery(event.currentTarget.value);
+    const onChangeSearchQuery = (event: ChangeEvent<HTMLInputElement>) => {
+        // setQuery(event.currentTarget.value);
+        dispatch(setQueryAc(event.currentTarget.value));
+    };
 
     const addCityToList = (cityName: string) => {
         if (cities.length <= 0) {
             dispatch(addCityThunk(cityName));
+            dispatch(setQueryAc(cityName));
+            getWeather(cityName);
         } else {
             let city = cities.find(({name}) => name === cityName);
 
             if (!city) {
                 dispatch(addCityThunk(cityName));
+                dispatch(setQueryAc(cityName));
+                getWeather(cityName);
+            } else {
+                dispatch(setQueryAc(cityName));
+                getWeather(cityName);
             }
         }
     };

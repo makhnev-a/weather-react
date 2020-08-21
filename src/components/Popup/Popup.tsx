@@ -12,7 +12,7 @@ export const Popup = ({cities, showWeather, deleteCity}: PropsType) => {
         <div className='search-popup'>
             <div>
                 {cities.map((city: CityType, index: number) =>
-                    <div style={{display: "flex", justifyContent: "space-around"}}>
+                    <div style={{display: "flex", justifyContent: "space-around"}} key={`popup${index}`}>
                         <span
                             onClick={() => showWeather(city.name)}
                             key={`popupItem${index}`}

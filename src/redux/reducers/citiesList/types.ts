@@ -1,4 +1,4 @@
-import {FILTER_TOWNS, GET_TOWNS} from "./citiesList.reducer";
+import {FILTER_TOWNS, GET_TOWNS, SET_QUERY} from "./citiesList.reducer";
 
 export type CoordType = {
     "lon": number
@@ -15,13 +15,19 @@ export type TownType = {
 
 export type InitialStateType = {
     towns: Array<TownType>
+    query: string
 };
 
 // Actions types
-export type ActionsType = GetTownsType | FilterTownsType;
+export type ActionsType = GetTownsType | FilterTownsType | SetQueryType;
 
 export type GetTownsType = {
     type: typeof GET_TOWNS
+};
+
+export type SetQueryType = {
+    type: typeof SET_QUERY
+    query: string
 };
 
 export type FilterTownsType = {
