@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from '../../redux/store';
 import {SearchBox} from "../SearchBox/SearchBox";
@@ -79,13 +79,8 @@ const App = ({dateBuilder, getTime}: PropsType) => {
                         hideDropdown={onDropdownHide}
                         onBtnSearchClick={onBtnSearchClick}
                     />
-
                 </div>
-
-                {showList && (
-                    <Popup cities={cities} showWeather={showWeather}/>
-                )}
-
+                {showList && (<Popup cities={cities} showWeather={showWeather}/>)}
                 {typeof weather?.main !== 'undefined' && (
                     <WeatherCard
                         weather={weather}
