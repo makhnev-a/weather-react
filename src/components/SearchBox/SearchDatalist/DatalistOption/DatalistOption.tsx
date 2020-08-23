@@ -6,9 +6,7 @@ type PropsType = {
 };
 
 export const DatalistOption = ({addCityToList, name}: PropsType) => {
-    const onCityClick = () => addCityToList(name);
-
     return (
-        <div onClick={onCityClick}>{name}</div>
+        <div onClick={() => addCityToList(name)}>{name}</div>
     );
 };

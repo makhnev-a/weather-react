@@ -24,14 +24,32 @@ export const WeatherCard = ({weather, dateBuilder, getTime}: PropsType) => {
                 <div className="weather">{weather.weather[0].main}</div>
             </div>
             <div className='weather-params'>
-                <div className='humidity'>{weather.main.humidity}%</div>
-                <div className='pressure'>{weather.main.pressure}mBar</div>
-                <div className='wind'>{weather.wind.speed}km/h</div>
+                <div className='humidity'>
+                    {weather.main.humidity}%
+                    <div>humidity</div>
+                </div>
+                <div className='pressure'>
+                    {weather.main.pressure}mBar
+                    <div>pressure</div>
+                </div>
+                <div className='wind'>
+                    {weather.wind.speed}km/h
+                    <div>wind</div>
+                </div>
             </div>
             <div className='weather-time'>
-                <div className='sunrize'>{getTime(weather.sys.sunrise)}</div>
-                <div className='sunrize'>{getTime(weather.sys.sunset)}</div>
-                <div className='dt'>{getTime(weather.dt)}</div>
+                <div className='sunrize'>
+                    {getTime(weather.sys.sunrise)}
+                    <div>sunrize</div>
+                </div>
+                <div className='sunrize'>
+                    {getTime(weather.sys.sunset)}
+                    <div>sunrize</div>
+                </div>
+                <div className='dt'>
+                    {getTime(weather.dt)}
+                    <div>dt</div>
+                </div>
             </div>
         </section>
     );

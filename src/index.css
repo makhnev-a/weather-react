@@ -30,7 +30,7 @@ main {
 
 .search-box {
   width: 100%;
-  margin: 0 auto 75px;
+  margin: 0 auto 45px;
 
   position: relative;
 }
@@ -90,11 +90,14 @@ main {
 }
 
 .search-popup {
-  /*display: none;*/
   background-color: #fff;
 
   width: 100%;
   height: 70vh;
+  max-height: 250px;
+
+  opacity: 1;
+  overflow-y: scroll;
 
   border-radius: 15px;
 }
@@ -175,10 +178,24 @@ main {
 .weather-params,
 .weather-time {
   color: #fff;
+  text-align: center;
+  font-style: italic;
 
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
 
   padding-bottom: 20px;
+}
+
+.popup-row {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 5px 15px;
+  box-shadow: 0 4px 2px -2px gray;
+}
+
+.popup-row:hover {
+  background: lightgray;
 }

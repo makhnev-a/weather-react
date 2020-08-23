@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from '../../redux/store';
 import {SearchBox} from "../SearchBox/SearchBox";
@@ -8,7 +8,7 @@ import {WeatherType} from '../WeatherCard/types';
 import {addCityThunk, deleteCityAc, updateWeaterThunk} from "../../redux/reducers/cities/citiesReducer";
 import {api} from '../../api/api';
 import {TownType} from "../../redux/reducers/citiesList/types";
-import { setQueryAc } from '../../redux/reducers/citiesList/citiesList.reducer';
+import {setQueryAc} from '../../redux/reducers/citiesList/citiesList.reducer';
 
 type PropsType = {
     dateBuilder: (d: any) => string
@@ -16,7 +16,6 @@ type PropsType = {
 };
 
 const App = ({dateBuilder, getTime}: PropsType) => {
-    // const [query, setQuery] = useState('');
     const [dropdown, setDropdown] = useState(false);
     const [showList, setShowList] = useState(false);
     const [weather, setWeather] = useState<WeatherType | null>(null);
@@ -31,7 +30,6 @@ const App = ({dateBuilder, getTime}: PropsType) => {
     const getWeather = (query: string) => {
         return api.getWeather(query).then(result => {
             setWeather(result.data);
-            // setQuery('');
             dispatch(setQueryAc(''));
         });
 
@@ -48,35 +46,38 @@ const App = ({dateBuilder, getTime}: PropsType) => {
         }
     };
 
-    const onDropdownShow = () => setDropdown(true);
+    const onDropdownShow = () => {
+        setDropdown(true);
+        setShowList(false);
+    };
+
     const onDropdownHide = () => setDropdown(false);
 
     const onBtnSearchClick = () => {
         setShowList((prevState) => !prevState);
         dispatch(updateWeaterThunk(cities));
+        setDropdown(false);
     };
 
-    const onChangeSearchQuery = (event: ChangeEvent<HTMLInputElement>) => {
-        // setQuery(event.currentTarget.value);
-        dispatch(setQueryAc(event.currentTarget.value));
+    const onChangeSearchQuery = (event: ChangeEvent<HTMLInputElement>) => dispatch(setQueryAc(event.currentTarget.value));
+
+    const setCity = (cityName: string) => {
+        dispatch(setQueryAc(cityName));
+        getWeather(cityName);
+        onDropdownHide();
+    };
+
+    const onAddSetCity = (cityName: string) => {
+        dispatch(addCityThunk(cityName));
+        setCity(cityName);
     };
 
     const addCityToList = (cityName: string) => {
         if (cities.length <= 0) {
-            dispatch(addCityThunk(cityName));
-            dispatch(setQueryAc(cityName));
-            getWeather(cityName);
+            onAddSetCity(cityName);
         } else {
             let city = cities.find(({name}) => name === cityName);
-
-            if (!city) {
-                dispatch(addCityThunk(cityName));
-                dispatch(setQueryAc(cityName));
-                getWeather(cityName);
-            } else {
-                dispatch(setQueryAc(cityName));
-                getWeather(cityName);
-            }
+            !city ? onAddSetCity(cityName) : setCity(cityName);
         }
     };
 
@@ -99,14 +100,17 @@ const App = ({dateBuilder, getTime}: PropsType) => {
                         onBtnSearchClick={onBtnSearchClick}
                     />
                 </div>
-                {showList && (<Popup cities={cities} showWeather={showWeather} deleteCity={deleteCity}/>)}
-                {typeof weather?.main !== 'undefined' && (
-                    <WeatherCard
-                        weather={weather}
-                        dateBuilder={dateBuilder}
-                        getTime={getTime}
-                    />
-                )}
+                {
+                    showList
+                        ? <Popup cities={cities} showWeather={showWeather} deleteCity={deleteCity}/>
+                        : typeof weather?.main !== 'undefined' && (
+                        <WeatherCard
+                            weather={weather}
+                            dateBuilder={dateBuilder}
+                            getTime={getTime}
+                        />
+                    )
+                }
             </main>
         </div>
     );
