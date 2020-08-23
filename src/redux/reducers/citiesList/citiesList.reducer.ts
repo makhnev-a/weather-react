@@ -1,4 +1,4 @@
-import {ActionsType, FilterTownsType, GetTownsType, InitialStateType, TownType} from './types.js';
+import {ActionsType, FilterTownsType, GetTownsType, InitialStateType} from './types.js';
 
 const initialState: InitialStateType = {
     towns: [
@@ -100,21 +100,8 @@ export const citiesListReducer = (state: InitialStateType = initialState, action
     switch (action.type) {
         case GET_TOWNS:
             return {...state};
-        // case FILTER_TOWNS:
-        //     debugger
-        //     return {
-        //         ...state,
-        //         towns: state.towns.filter((town: TownType) => {
-        //             if (town.name.includes(action.name)) {
-        //                 return town;
-        //             }
-        //         })
-        //     };
         case SET_QUERY:
-            return {
-                ...state,
-                query: action.query
-            };
+            return {...state, query: action.query};
         default:
             return state;
     }
@@ -123,7 +110,6 @@ export const citiesListReducer = (state: InitialStateType = initialState, action
 export const GET_TOWNS = 'Reducers/CitiesListReducer/GET_TOWNS';
 export const FILTER_TOWNS = 'Reducers/CitiesListReducer/FILTER_TOWNS';
 export const SET_QUERY = 'Reducers/CitiesListReducer/SET_QUERY';
-
 
 // Actions
 export const getTownsAc = (): GetTownsType => ({

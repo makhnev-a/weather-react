@@ -1,18 +1,19 @@
 import {api} from "../../../api/api";
 import {
     ActionsType,
-    AddCityType, ChangeInputName,
-    CityType, DeleteCityType,
+    AddCityType,
+    CityType,
+    DeleteCityType,
     InitialStateType,
     ThunkDispatchType,
     ThunkType,
-    UpdateCityType, UpdateWeatherType
+    UpdateCityType,
+    UpdateWeatherType
 } from "./types";
 import {WeatherType} from "../../../components/WeatherCard/types";
 
 const initialState: InitialStateType = {
-    cities: [],
-    inputCity: ''
+    cities: []
 };
 
 export const ADD_CITIES = 'Reducers/CitiesReducer/ADD_CITIES';
@@ -36,8 +37,6 @@ export const citiesReducer = (state: InitialStateType = initialState, action: Ac
                     return city;
                 })
             };
-        case CHANGE_INPUT_NAME:
-            return {...state, inputCity: action.inputName};
         case UPDATE_WEATHER:
             return {...state, cities: action.cities};
         case DELETE_CITY:
@@ -63,11 +62,6 @@ export const addCityAc = (cityWeather: CityType): AddCityType => ({
 export const deleteCityAc = (cityName: string): DeleteCityType => ({
     type: DELETE_CITY,
     cityName
-});
-
-export const changeInputName = (inputName: string): ChangeInputName => ({
-    type: CHANGE_INPUT_NAME,
-    inputName
 });
 
 export const updateCityAc = (name: string, weather: number): UpdateCityType => ({
